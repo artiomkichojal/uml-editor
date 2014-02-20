@@ -1,7 +1,8 @@
+//Test
 package fk;
 
 /**
- * Objekte der Klasse Attribut repräsentieren Attribute
+ * Objekte der Klasse Attribut reprï¿½sentieren Attribute
  * <br/>
  * Attribute haben einen Namen "name" und
  * einen String "datentyp" = {int, double, long, float, String, char} 
@@ -22,7 +23,7 @@ public class Attribut {
 	 * datentyp, ist das Attributentyp
 	 * 
 	 * @pre datentyp = {int, double, long, float, String, char}
-	 * @post Vorbedingung erfüllt!
+	 * @post Vorbedingung erfï¿½llt!
 	 * 
 	 */
 	private String datentyp;
@@ -49,10 +50,10 @@ public class Attribut {
 	}
 
 	/**
-	 * Verändert oder weist dem Attribut einen neuen name zu.
+	 * Verï¿½ndert oder weist dem Attribut einen neuen name zu.
 	 * 
 	 * @param name Name des Attributs
-	 * @post name ist der gewünschte Attributname
+	 * @post name ist der gewï¿½nschte Attributname
 	 * @modifies this
 	 */
 	public void setName(String name) {
@@ -70,10 +71,10 @@ public class Attribut {
 	}
 
 	/**
-	 * Verändert oder weist dem Attribut einen neuen Datentyp zu
+	 * Verï¿½ndert oder weist dem Attribut einen neuen Datentyp zu
 	 * 
 	 * @param datentyp Typ des Attributs
-	 * @post datentyp ist der gewünschte Attributtyp
+	 * @post datentyp ist der gewï¿½nschte Attributtyp
 	 * @modifies this
 	 */
 	public void setDatentyp(String datentyp) {
