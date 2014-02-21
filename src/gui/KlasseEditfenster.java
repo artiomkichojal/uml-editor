@@ -32,7 +32,11 @@ public class KlasseEditfenster extends JFrame{
 	
 	JPanel jp;
 	JButton jb1;
-	JTable jt;
+	private JTable attributTable;
+	public JTable getAttributTable() {
+		return attributTable;
+	}
+
 	JTextField atrN;
 	JTextField klassenName;
 	
@@ -43,6 +47,7 @@ public class KlasseEditfenster extends JFrame{
 	}
 
 	public void init() {
+		
 		jp = new JPanel(new GridLayout(0,2));
 		JLabel jlA = new JLabel("Atrname");
 		JLabel jlK = new JLabel("Klassenname");
@@ -58,11 +63,8 @@ public class KlasseEditfenster extends JFrame{
 		
 		final ArrayList<ArrayList<String>> data = new ArrayList<>();
 		ArrayList<String> row = new ArrayList<String>();
-////		row.add("name");
-////		row.add("Typ");
-//		data.add(row);
 		jb1 = new JButton("Atr hinz");
-		jt = new JTable(new MyTableModel(data));
+		attributTable = new JTable(new MyTableModel(data));
 		//Atribut button
 				jb1.addActionListener(new ActionListener() {
 					
@@ -73,16 +75,16 @@ public class KlasseEditfenster extends JFrame{
 						row.add(atrN.getText());
 						row.add((String)datentypen.getSelectedItem());
 						data.add(row);
-						TableModel dm = jt.getModel();
+						TableModel dm = attributTable.getModel();
 						((AbstractTableModel) dm).fireTableDataChanged(); 
 						
 					}
 				});
 		
 		
-		jp.add(jt);
+		jp.add(attributTable);
 		jp.add(jb1);
-		JScrollPane scrollPane = new JScrollPane(jt);
+		JScrollPane scrollPane = new JScrollPane(attributTable);
 		jp.add(scrollPane);
 		this.add(jp);
 

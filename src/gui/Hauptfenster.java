@@ -88,8 +88,8 @@ public class Hauptfenster extends JFrame implements Observer{
 			kc1.setKlasse((Klasse)arg1);
 			int x = (int) (Math.random()*0);
 	        int y = (int) (Math.random()*0);
-	        Color randomColor = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
-			kc1.addRechteck(x, y, 100, 100, randomColor);
+	        //Color randomColor = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
+			kc1.addRechteck(x, y, 100, 100, Color.BLACK);
 			System.out.println("Klasse");
 			kC = kc1;
 			kC.setBounds(20, 200, 100, 100);

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class MyTableModel extends AbstractTableModel{
-	ArrayList<ArrayList<String>> data;
+	private ArrayList<ArrayList<String>> attributes;
 	
 	public MyTableModel(ArrayList<ArrayList<String>> data) {
-		this.data = data;
+		this.attributes = data;
 	}
 
 	@Override
 	public int getRowCount() {
-		return data.size();
+		return attributes.size();
 	}
 
 	@Override
@@ -23,17 +23,12 @@ public class MyTableModel extends AbstractTableModel{
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object res = null;
-			ArrayList<String> row = data.get(rowIndex);
+			ArrayList<String> row = attributes.get(rowIndex);
 			res = row.get(columnIndex);
 	
     return res;
 	}
 	public String getColumnName(int column) {
-//        switch (column) {
-//        case 1:
-//            return "Typ";
-//        default: return "Name";   
-//        }
 		if (column == 1) {
 			return "Typ";
 		}else{
@@ -41,5 +36,6 @@ public class MyTableModel extends AbstractTableModel{
 		}
 			
     }
+
 
 }

@@ -7,10 +7,12 @@ import java.util.Observable;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import fk.Attribut;
 import fk.Klasse;
+import fk.MyTableModel;
 
 
 public class KlasseErstellenFenster extends Observable {
@@ -34,11 +36,24 @@ public class KlasseErstellenFenster extends Observable {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				setChanged();
-				notifyObservers(new Klasse(getKled().getKlassenName().getText()));
-				countK++;
-				kled.dispose();
+				String klassName = kled.getKlassenName().getText();
+				//wenn klassename soll nicht leer sein
+				if(!klassName.equals("")) {
+					Klasse klasse = new Klasse(klassName);
+					//fuege Atributen der Klasse hinzu
+					MyTableModel tabelle =  (MyTableModel) kled.getAttributTable().getModel();
+					for (int i = 0; i < tabelle.getRowCount(); i++) {
+						//erstelle Attribut
+						klasse.attributErstellen((String)tabelle.getValueAt(i, 0), (String)tabelle.getValueAt(i, 1));
+					}
+					setChanged();
+					notifyObservers(klasse);
+					countK++;
+					kled.dispose();
+				}else{
+					JOptionPane.showMessageDialog(kled, "Geben Sie eine Klassenname ein!");
+				}
+				
 				
 			}
 		});

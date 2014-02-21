@@ -17,14 +17,14 @@ public class Klasse {
 	
 	public Klasse(String name) {
 		this.name = name;
-		attribute = new ArrayList<>();
+		attribute = new ArrayList<Attribut>();
 	}
 	
 	public void klassenNameAendern() {
 		
 	}
 	public void attributErstellen(String name, String datentyp) {
-		
+		attribute.add(new Attribut(name, datentyp));
 	}
 	public void attributLoeschen(String name, String datentyp) {
 		

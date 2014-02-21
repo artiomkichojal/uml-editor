@@ -75,16 +75,18 @@ public class KlComponent extends JPanel{
 			String strText = kl.getName();
 			Font f = getFont();
 			FontMetrics metrics = g.getFontMetrics(f);
-			// get the height of a line of text in this
-			// font and render context
+			//hoehe des Textes
 			int hgt = metrics.getHeight();
-			// get the advance of my text in this font
-			// and render context
+			//Breite von String
 			int adv = metrics.stringWidth(strText);
-			// calculate the size of a box to hold the
-			// text with some padding.
-			char[] txt = strText.toCharArray();
-			g.drawChars(txt, 0, strText.length(), re.x + 2, re.y + hgt + 2);
+
+			g.drawString(strText, re.x + 2, re.y + hgt + 2);
+			g.drawLine(re.x,  re.y + hgt + 2 + 2, 100, re.y + hgt + 2 + 2);
+			if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
+				System.out.println("Atsize" + klasse.getAttribute().size());
+				g.drawString(klasse.getAttribute().get(0).getName(), re.x + 2, re.y + (hgt + 2)*2);
+			}
+			
 			g.drawRect(re.x, re.y, re.width, re.height);
 		}
 	}
