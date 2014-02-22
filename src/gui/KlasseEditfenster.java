@@ -1,4 +1,5 @@
 package gui;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -57,7 +58,7 @@ public class KlasseEditfenster extends JFrame{
 		final ArrayList<ArrayList<String>> data = new ArrayList<>();
 		ArrayList<String> row = new ArrayList<String>();
 		jb1 = new JButton("Atr hinz");
-		jb2 = new JButton("Atr löschen");
+		jb2 = new JButton("Atr lï¿½schen");
 		attributTable = new JTable(new MyTableModel(data));
 		//Atribut button
 				jb1.addActionListener(new ActionListener() {
