@@ -31,7 +31,7 @@ public class KlasseErstellenFenster extends Observable {
 		kled.init();
 		jb = new JButton("Hinzufuegen");
 		
-		kled.getJp().add(jb,BorderLayout.WEST);		
+		kled.getJp().add(jb,BorderLayout.PAGE_END);		
 		jb.addActionListener(new ActionListener() {
 			
 			@Override
