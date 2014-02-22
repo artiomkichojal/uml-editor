@@ -27,7 +27,6 @@ public class Panel extends JPanel{
 //		g2.rotate(3.14, 1, 0);
 //		g2.rotate(3.14, 0, 1);
 		int height = Toolkit.getDefaultToolkit().getScreenSize().height;
-		System.out.println("h" + height);
 		 double x = 0;
 		 double y = 1;
 		 double t = 3;
@@ -37,8 +36,6 @@ public class Panel extends JPanel{
 			 //g.drawOval(x, y, 1, 1);
 			 x = ((((t-3)/7) * ((t-3)/7) *((t-3)/7))*100 / 6);
 			 y = 700 - (((10*(t-3)/7)) + 10);
-			 System.out.println("x " + x);
-			 System.out.println("y " + y);
 			 t += 0.1;
 			 
 		 }

@@ -6,89 +6,97 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import fk.Attribut;
 import fk.Klasse;
 
-public class KlComponent extends JPanel{
+public class KlComponent extends JPanel {
 	Klasse klasse;
+	Rectangle rechteck;
+	private final int GAP = 2; // Zeilenabstand und Spaltenabstand
 
-	public KlComponent() {
-		this.setPreferredSize(new Dimension(100	, 100));
-		setOpaque(true);
-		setBackground(Color.GREEN);
-		
+	public KlComponent(Klasse klasse) {
+		this.klasse = klasse;
+		rechteck = new Rectangle();
+		setBackground(Color.WHITE);
+		Random r = new Random();
+		int x = r.nextInt(600);
+		int y = r.nextInt(500);
+		setBounds(x, y, berechneBreite(), berechneHoehe());
+
+		rechteck = new Rectangle(0, 0, berechneBreite() - 2, berechneHoehe());
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
 	}
-	
 
 	public Klasse getKlasse() {
 		return klasse;
 	}
 
-	public void setKlasse(Klasse klasse) {
-		this.klasse = klasse;
-	}
-
-
-	private static class Rechteck {
-		final int x;
-		final int y;
-		final int width;
-		final int height;
-		final Color color;
-
-		public Rechteck(int x, int y, int width, int height, Color color) {
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-			this.color = color;
-		}
-	}
-
-	private final LinkedList<Rechteck> rechtecke = new LinkedList<Rechteck>();
-
-	public void addLine(int x, int y, int width, int height) {
-		addRechteck(x, y, width, height, Color.black);
-	}
-
-	public void addRechteck(int x, int y, int width, int height, Color color) {
-		rechtecke.add(new Rechteck(x, y, width, height, color));
-		repaint();
-	}
-
-	public void clearLines() {
-		rechtecke.clear();
-		repaint();
-	}
-
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
-		for (Rechteck re : rechtecke) {
-			g.setColor(re.color);
-			Klasse kl = klasse;
-			String strText = kl.getName();
-			Font f = getFont();
-			FontMetrics metrics = g.getFontMetrics(f);
-			//hoehe des Textes
-			int hgt = metrics.getHeight();
-			//Breite von String
-			int adv = metrics.stringWidth(strText);
-
-			g.drawString(strText, re.x + 2, re.y + hgt + 2);
-			g.drawLine(re.x,  re.y + hgt + 2 + 2, 100, re.y + hgt + 2 + 2);
-			if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
-				System.out.println("Atsize" + klasse.getAttribute().size());
-				g.drawString(klasse.getAttribute().get(0).getName(), re.x + 2, re.y + (hgt + 2)*2);
+		FontMetrics metrics = g.getFontMetrics(getFont());
+		// hoehe des Textes
+		int hgt = metrics.getHeight();
+		// Zeichne Klasen Name
+		g.drawString(klasse.getName(), 0 + 2, 0 + hgt + 2);
+		g.drawLine(0, 0 + hgt + GAP * 2, berechneBreite() + 0, 0 + hgt + GAP * 2);
+		// zeichne Attribute
+		if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
+			int count = (hgt + GAP) * 2;
+			for (Attribut atr : klasse.getAttribute()) {
+				g.drawString(atr.getName() + ": " + atr.getDatentyp(), 2, count);
+				count += hgt + GAP;
 			}
-			
-			g.drawRect(re.x, re.y, re.width, re.height);
 		}
+	}
+
+	/**
+	 * Berechnet Breite des KlComponent. Es wird maximale breite von Klassenname
+	 * und Attributnameberechnet
+	 * 
+	 * @return breite
+	 */
+	public int berechneBreite() {
+		if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
+			Font f = getFont();
+			FontMetrics metrics = getFontMetrics(f);
+			// enthaelt breiten von jeden String
+			ArrayList<Integer> breiten = new ArrayList<Integer>();
+			breiten.add(metrics.stringWidth(klasse.getName()));
+			for (Attribut atr : klasse.getAttribute()) {
+				breiten.add(metrics.stringWidth(atr.getName() + ": "
+						+ atr.getDatentyp()));
+			}
+			Collections.sort(breiten);
+			return breiten.get(breiten.size() - 1) + GAP * 2;
+		}
+		return 0;
+	}
+
+	/**
+	 * Berechnet Hoehe des KlComponent
+	 * 
+	 * @return Hoehe
+	 */
+	public int berechneHoehe() {
+		Font f = getFont();
+		FontMetrics metrics = getFontMetrics(f);
+		int maxHeight = (metrics.getHeight() + GAP)
+				* (klasse.getAttribute().size() + 2);
+		return maxHeight;
 	}
 
 }

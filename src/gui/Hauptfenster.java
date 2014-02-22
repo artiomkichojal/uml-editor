@@ -35,12 +35,14 @@ import fk.Klassendiagramm;
 
 
 public class Hauptfenster extends JFrame implements Observer{
-	private static Hauptfenster ref;
+	private static Hauptfenster hauptfenster;
 	Klassendiagramm klD;
 	JFrame jf;
-	JPanel jp;
+	private JPanel mainpanel;
+	private JMenu menu;
 	JButton jb;
 	JPanel kC;
+	/**Enthaelt nur KlKomponent*/
 	JPanel workBench;
 	
 	KlasseErstellenFenster kef;
@@ -52,9 +54,8 @@ public class Hauptfenster extends JFrame implements Observer{
 		kef = new KlasseErstellenFenster();
 		Observable ob = kef;
 		ob.addObserver(this);
-		
-		//jf = new JFrame();
-		jp = new Panel();
+
+		mainpanel = new JPanel();
 		jb = new JButton("Klasse Erstellen");
 		jb.addActionListener(new ActionListener() {
 			
@@ -63,10 +64,8 @@ public class Hauptfenster extends JFrame implements Observer{
 				kef.init();					
 			}
 		});
-		jp.add(jb);
-		//kC = new KlComponent();
-		
-		this.add(jp,BorderLayout.NORTH);
+		mainpanel.add(jb);
+		this.add(mainpanel,BorderLayout.NORTH);
 		workBench = new JPanel();
 		workBench.setLayout(null);
 		workBench.setBackground(Color.WHITE);
@@ -76,52 +75,33 @@ public class Hauptfenster extends JFrame implements Observer{
 		setPreferredSize(new Dimension(800, 600));
 		pack();
 		setVisible(true);
-		System.out.println("hauptfwnster");
 	}
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
 		if (arg1 instanceof Klasse) {
-			KlComponent kc1 = new KlComponent();
-			
-			kc1.setKlasse((Klasse)arg1);
-			int x = (int) (Math.random()*0);
-	        int y = (int) (Math.random()*0);
-	        //Color randomColor = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
-			kc1.addRechteck(x, y, 100, 100, Color.BLACK);
-			System.out.println("Klasse");
+			KlComponent kc1 = new KlComponent((Klasse)arg1);
 			kC = kc1;
-			kC.setBounds(20, 200, 100, 100);
 			workBench.add(kC);	
 			workBench.repaint();
 			revalidate();
 			handleDrag(kC);
-		}
-		if (arg1 instanceof Attribut) {
-			
-			Attribut atr = (Attribut) arg1;
-			System.out.println("Attribut mit " + atr.getName() + " erstellt");
-			
-		}
-		
+		}		
 	}
 	
 	public static Hauptfenster getInstance() {
-		if (ref == null) {
-			ref = new Hauptfenster();
-			return ref;
+		if (hauptfenster == null) {
+			hauptfenster = new Hauptfenster();
+			return hauptfenster;
 		}
 		return null;
 		
 	}
-//	@Override
-//	public void paint(Graphics g) {
-//		// TODO Auto-generated method stub
-//		super.paint(g);
-//		
-//		 g.drawLine(0, 0, 100, 100);
-//	}
+	/**
+	 * Methode zum Bewegen von Komponenten
+	 * @param panel
+	 */
 	public void handleDrag(JPanel panel){
 	        kC.addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -136,10 +116,10 @@ public class Hauptfenster extends JFrame implements Observer{
 	
 	private JMenuBar generateMenu() {
 		JMenuBar menubar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
+		JMenu menu = new JMenu("File");
 		JMenuItem loadItem = new JMenuItem("Load");
 		JMenuItem saveItem = new JMenuItem("Save");
-		fileMenu.add(loadItem);
+		menu.add(loadItem);
 		loadItem.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -177,9 +157,9 @@ public class Hauptfenster extends JFrame implements Observer{
 		});
 
 		
-		fileMenu.add(saveItem);
+		menu.add(saveItem);
 
-		menubar.add(fileMenu);
+		menubar.add(menu);
 
 		return menubar;
 	}
