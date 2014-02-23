@@ -33,22 +33,22 @@ import fk.Klassendiagramm;
 
 public class Hauptfenster extends JFrame implements Observer{
 	private static Hauptfenster hauptfenster;
-	Klassendiagramm klD;
+	private Klassendiagramm klDia;
 	JFrame jf;
 	private JPanel mainpanel;
 	private JMenu menu;
 	JButton jb;
-	JPanel kC;
+	KlComponent kC;
 	/**Enthaelt nur KlKomponent*/
 	JPanel workBench;
 	
 	KlasseErstellenFenster kef;
 	
 	
-	private Hauptfenster(String title) {
+	private Hauptfenster(String title, String klName) {
 		super(title);
 		setJMenuBar(generateMenu());
-		klD = new Klassendiagramm();
+		klDia = new Klassendiagramm(klName);
 		kef = new KlasseErstellenFenster();
 		Observable ob = kef;
 		ob.addObserver(this);
@@ -81,18 +81,22 @@ public class Hauptfenster extends JFrame implements Observer{
 	public void update(Observable arg0, Object arg1) {
 
 		if (arg1 instanceof Klasse) {
-			KlComponent kc1 = new KlComponent((Klasse)arg1);
-			kC = kc1;
-			workBench.add(kC);	
-			workBench.repaint();
-			revalidate();
-			handleDrag(kC);
+			kC= new KlComponent((Klasse)arg1);
+			
+			klDia.getKlassen().add(kC);
+			//kC = kc1;
+//			workBench.add(kC);	
+//			workBench.repaint();
+//			revalidate();
+			zeichneKlassen();
+			handleDrag();
+			
 		}		
 	}
 	
-	public static Hauptfenster getInstance() {
+	public static Hauptfenster getInstance(String klName) {
 		if (hauptfenster == null) {
-			hauptfenster = new Hauptfenster("Hauptfenster");
+			hauptfenster = new Hauptfenster("Hauptfenster", klName);
 			return hauptfenster;
 		}
 		return null;
@@ -102,16 +106,19 @@ public class Hauptfenster extends JFrame implements Observer{
 	 * Methode zum Bewegen von Komponenten
 	 * @param panel
 	 */
-	public void handleDrag(JPanel panel){
-	        kC.addMouseMotionListener(new MouseMotionAdapter() {
+	public void handleDrag(){
+		for (final KlComponent klComp : klDia.getKlassen()) {
+			klComp.addMouseMotionListener(new MouseMotionAdapter() {
 
 	            @Override
 	            public void mouseDragged(MouseEvent me) {
 	                me.translatePoint(me.getComponent().getLocation().x, me.getComponent().getLocation().y);
-	                kC.setLocation(me.getX(), me.getY());
+	                klComp.setLocation(me.getX(), me.getY());
 	            }
 
 	        });
+		}
+	        
 	}
 	
 	private JMenuBar generateMenu() {
@@ -127,11 +134,17 @@ public class Hauptfenster extends JFrame implements Observer{
 				int returnVal = fileChooser.showOpenDialog(Hauptfenster.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = fileChooser.getSelectedFile();
-//		            try {
-//						contr.setAgenda(contr.getAgenda().load(file.getAbsolutePath()));
-//		            } catch (IOException e) {
-//						e.printStackTrace();
-//					}
+		            try {
+						Klassendiagramm kd = load(file.getAbsolutePath());
+						System.out.println(kd.getName());
+						klDia= kd;
+						workBench.removeAll();
+						revalidate();
+						repaint();
+						zeichneKlassen();
+		            } catch (IOException e) {
+						e.printStackTrace();
+					}
 				} else {
 
 		        }
@@ -146,11 +159,11 @@ public class Hauptfenster extends JFrame implements Observer{
 				int returnVal = fileChooser.showSaveDialog(Hauptfenster.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = fileChooser.getSelectedFile();
-//		            try {
-//						//contr.getAgenda().save(file.getAbsolutePath());
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
+		            try {
+						save(file.getAbsolutePath());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				} else {
 
 		        }
@@ -169,7 +182,7 @@ public class Hauptfenster extends JFrame implements Observer{
 		try {
 			fos = new FileOutputStream(new File(fileName));
 			ObjectOutputStream o = new ObjectOutputStream(fos);
-			o.writeObject(this);
+			o.writeObject(klDia);
 		} catch (IOException e) {
 			System.err.println(e);
 		} finally {
@@ -181,13 +194,13 @@ public class Hauptfenster extends JFrame implements Observer{
 
 	}
 
-	public Hauptfenster load(String fileName) throws IOException {
+	public Klassendiagramm load(String fileName) throws IOException {
 		InputStream fis = null;
-		Hauptfenster agenda = null;
+		Klassendiagramm kld = null;
 		try {
 			fis = new FileInputStream(fileName);
 			ObjectInputStream o = new ObjectInputStream(fis);
-			agenda = (Hauptfenster) o.readObject();
+			kld = (Klassendiagramm) o.readObject();
 		} catch (IOException e) {
 			System.err.println(e);
 		} catch (ClassNotFoundException e) {
@@ -198,11 +211,19 @@ public class Hauptfenster extends JFrame implements Observer{
 			} catch (Exception e) {
 			}
 		}
-		return agenda;
+		return kld;
+	}
+	public void zeichneKlassen() {
+		for (KlComponent klComp : klDia.getKlassen()) {
+			workBench.add(kC);	
+			workBench.repaint();
+			revalidate();
+		}
+		
 	}
 	
 	public static void main(String[] args) {
-		Hauptfenster.getInstance();
+		Hauptfenster.getInstance("Diagramm2");
 	}
 
 	

@@ -1,8 +1,9 @@
 package fk;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Klasse {
+public class Klasse implements Serializable{
 	ArrayList<Attribut> attribute;
 	
 	
@@ -20,8 +21,8 @@ public class Klasse {
 		attribute = new ArrayList<Attribut>();
 	}
 	
-	public void klassenNameAendern() {
-		
+	public void klassenNameAendern(String klName) {
+		name = klName;
 	}
 	public void attributErstellen(String name, String datentyp) {
 		attribute.add(new Attribut(name, datentyp));

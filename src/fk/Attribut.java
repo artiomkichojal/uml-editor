@@ -1,5 +1,7 @@
 package fk;
 
+import java.io.Serializable;
+
 /**
  * Objekte der Klasse Attribut repr�sentieren Attribute
  * <br/>
@@ -9,7 +11,7 @@ package fk;
  * @author Gruppe1
  * 
  */
-public class Attribut {
+public class Attribut implements Serializable{
 
 	/**
 	 * name, beinhaltet den Namen des Attributs
