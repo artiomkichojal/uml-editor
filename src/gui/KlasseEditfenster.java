@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -49,8 +50,9 @@ public class KlasseEditfenster extends JFrame{
 		jp.setLayout(new BorderLayout(5,5));
 		northJP.setLayout(new GridLayout(0,3,4,2));
 		centerJP.setLayout(new GridLayout(0,3,4,2));
-		JLabel jlA = new JLabel("Atrname:");
-		JLabel jlK = new JLabel("Klassenname:");		
+		centerJP.setBorder(BorderFactory.createTitledBorder("bar")); 
+		JLabel jlA = new JLabel("Atrname");
+		JLabel jlK = new JLabel("Klassenname");		
 		klassenName = new JTextField();			
 		atrN = new JTextField();		
 		String [] dt = {"int","String"};
@@ -58,7 +60,7 @@ public class KlasseEditfenster extends JFrame{
 		final ArrayList<ArrayList<String>> data = new ArrayList<>();
 		ArrayList<String> row = new ArrayList<String>();
 		jb1 = new JButton("Atr hinz");
-		jb2 = new JButton("Atr l�schen");
+		jb2 = new JButton("Atr löschen");
 		attributTable = new JTable(new MyTableModel(data));
 		//Atribut button
 				jb1.addActionListener(new ActionListener() {
