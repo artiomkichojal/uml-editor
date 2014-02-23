@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -48,7 +49,8 @@ public class Hauptfenster extends JFrame implements Observer{
 	KlasseErstellenFenster kef;
 	
 	
-	private Hauptfenster() {
+	private Hauptfenster(String title) {
+		super(title);
 		setJMenuBar(generateMenu());
 		klD = new Klassendiagramm();
 		kef = new KlasseErstellenFenster();
@@ -75,6 +77,8 @@ public class Hauptfenster extends JFrame implements Observer{
 		setPreferredSize(new Dimension(800, 600));
 		pack();
 		setVisible(true);
+		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width- getSize().width)/2,(d.height- getSize().height)/2);
 	}
 	
 	@Override
@@ -92,7 +96,7 @@ public class Hauptfenster extends JFrame implements Observer{
 	
 	public static Hauptfenster getInstance() {
 		if (hauptfenster == null) {
-			hauptfenster = new Hauptfenster();
+			hauptfenster = new Hauptfenster("Hauptfenster");
 			return hauptfenster;
 		}
 		return null;

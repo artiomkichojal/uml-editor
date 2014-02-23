@@ -27,7 +27,7 @@ public class KlasseErstellenFenster extends Observable {
 	}
 	
 	public void init() {
-		kled = new KlasseEditfenster();
+		kled = new KlasseEditfenster("Klasse erstellen");
 		kled.init();
 		jb = new JButton("Hinzufuegen");
 		

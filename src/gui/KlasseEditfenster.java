@@ -2,6 +2,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -28,6 +29,12 @@ public class KlasseEditfenster extends JFrame{
 	JButton jb1;
 	JButton jb2;
 	private JTable attributTable;
+	public KlasseEditfenster(String title){
+		super(title);
+		setResizable(false);
+		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width- getSize().width)/2,(d.height- getSize().height)/2);		
+	}
 	public JTable getAttributTable() {
 		return attributTable;
 	}
