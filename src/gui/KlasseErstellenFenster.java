@@ -1,64 +1,72 @@
 package gui;
+
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import fk.Attribut;
 import fk.Klasse;
 import fk.MyTableModel;
 
-
+/**
+ * Fenster zum Erstellen von einer Klasse mit Attributen.
+ * Enthaelt Schaltflaeche zum Erstellen.
+ * @author Gruppe1
+ *
+ */
 public class KlasseErstellenFenster extends Observable {
+	
+	private JButton erstellenB;
+	private KlasseEditfenster klErstellFenster;
 
-	JButton jb;
-	static int countK = 0;
-	static int countAtr = 0;
-	KlasseEditfenster kled;
-	
 	public KlasseEditfenster getKled() {
-		return kled;
+		return klErstellFenster;
 	}
-	
+
 	public void init() {
-		kled = new KlasseEditfenster("Klasse erstellen");
-		kled.init();
-		jb = new JButton("Hinzufuegen");
-		
-		kled.getJp().add(jb,BorderLayout.PAGE_END);		
-		jb.addActionListener(new ActionListener() {
-			
+		klErstellFenster = new KlasseEditfenster("Klasse erstellen");
+		klErstellFenster.init();
+		erstellenB = new JButton("Erstellen");
+
+		klErstellFenster.getPanelEditKl().add(erstellenB, BorderLayout.PAGE_END);
+		erstellenB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String klassName = kled.getKlassenName().getText();
-				//wenn klassename soll nicht leer sein
-				if(!klassName.equals("")) {
+				String klassName = klErstellFenster.getKlassenName().getText();
+				// klassename soll nicht leer sein
+				if (!klassName.equals("")) {
 					Klasse klasse = new Klasse(klassName);
-					//fuege Atributen der Klasse hinzu
-					MyTableModel tabelle =  (MyTableModel) kled.getAttributTable().getModel();
+					// fuege Atributen der Klasse hinzu
+					MyTableModel tabelle = (MyTableModel) klErstellFenster
+							.getAttrTable().getModel();
 					for (int i = 0; i < tabelle.getRowCount(); i++) {
-						//erstelle Attribut
-						klasse.attributErstellen((String)tabelle.getValueAt(i, 0), (String)tabelle.getValueAt(i, 1));
+						// erstelle Attribut
+						klasse.attributErstellen(
+								(String) tabelle.getValueAt(i, 0),
+								(String) tabelle.getValueAt(i, 1));
 					}
+					// Observer wird informiert und neue Klasse uebergeben
 					setChanged();
 					notifyObservers(klasse);
-					countK++;
-					kled.dispose();
-				}else{
-					JOptionPane.showMessageDialog(kled, "Geben Sie eine Klassenname ein!");
+					// Fenster schliesen
+					klErstellFenster.dispose();
+				} else {
+					JOptionPane.showMessageDialog(klErstellFenster,
+							"Geben Sie eine Klassenname ein!");
 				}
-				
-				
+
 			}
 		});
-		
+
 	}
-	
+
+	/**
+	 * @return klErstellFenster
+	 */
+	public KlasseEditfenster getKlErstellFenster() {
+		return klErstellFenster;
+	}
 
 }

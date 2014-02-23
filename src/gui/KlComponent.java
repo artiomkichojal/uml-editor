@@ -1,47 +1,38 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fk.Attribut;
 import fk.Klasse;
 
+/**
+ * KlComponent zeichnet eine Klasse mit allen Attributen. 
+ * @author Gruppe 1
+ *
+ */
 public class KlComponent extends JPanel {
-	Klasse klasse;
-	Rectangle rechteck;
+	private Klasse klasse;
 	private final int GAP = 2; // Zeilenabstand und Spaltenabstand
 
 	public KlComponent(Klasse klasse) {
 		this.klasse = klasse;
-		rechteck = new Rectangle();
-		setBackground(Color.WHITE);
+		//setBackground(Color.WHITE);
+		
 		Random r = new Random();
 		int x = r.nextInt(600);
 		int y = r.nextInt(500);
 		setBounds(x, y, berechneBreite(), berechneHoehe());
-
-		rechteck = new Rectangle(0, 0, berechneBreite() - 2, berechneHoehe());
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-	}
-
-	public Klasse getKlasse() {
-		return klasse;
 	}
 
 	@Override
@@ -54,7 +45,7 @@ public class KlComponent extends JPanel {
 		g.drawString(klasse.getName(), 0 + 2, 0 + hgt + 2);
 		g.drawLine(0, 0 + hgt + GAP * 2, berechneBreite() + 0, 0 + hgt + GAP * 2);
 		// zeichne Attribute
-		if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
+		if (atributeOk()) {
 			int count = (hgt + GAP) * 2;
 			for (Attribut atr : klasse.getAttribute()) {
 				g.drawString(atr.getName() + ": " + atr.getDatentyp(), 2, count);
@@ -70,33 +61,57 @@ public class KlComponent extends JPanel {
 	 * @return breite
 	 */
 	public int berechneBreite() {
-		if (klasse.getAttribute() != null && klasse.getAttribute().size() != 0) {
-			Font f = getFont();
-			FontMetrics metrics = getFontMetrics(f);
-			// enthaelt breiten von jeden String
-			ArrayList<Integer> breiten = new ArrayList<Integer>();
-			breiten.add(metrics.stringWidth(klasse.getName()));
+		Font f = getFont();
+		FontMetrics metrics = getFontMetrics(f);
+		// enthaelt breiten von jeden String
+		ArrayList<Integer> breiten = new ArrayList<Integer>();
+		breiten.add(metrics.stringWidth(klasse.getName()));
+		
+		if (atributeOk()) {			
 			for (Attribut atr : klasse.getAttribute()) {
 				breiten.add(metrics.stringWidth(atr.getName() + ": "
 						+ atr.getDatentyp()));
 			}
+			//Sortiere breiten aufsteigend
 			Collections.sort(breiten);
 			return breiten.get(breiten.size() - 1) + GAP * 2;
 		}
-		return 0;
+		return breiten.get(0) + GAP * 2;
 	}
 
 	/**
-	 * Berechnet Hoehe des KlComponent
+	 * Berechnet die Hoehe des KlComponent.
+	 * Ergebnis ist hoehe einer Zeile(z.B Klassenname oder Attributname).
+	 * mal Anzahl der Zeilen.
 	 * 
 	 * @return Hoehe
 	 */
 	public int berechneHoehe() {
 		Font f = getFont();
 		FontMetrics metrics = getFontMetrics(f);
-		int maxHeight = (metrics.getHeight() + GAP)
-				* (klasse.getAttribute().size() + 2);
-		return maxHeight;
+		int maxHeight = (metrics.getHeight() + GAP);
+		//multipliziere mit anzahl der attributen, falls nicht null oder 
+		//anzahl ist gleich 0
+		if (atributeOk()) {			
+			maxHeight *= (klasse.getAttribute().size() + 1);
+		}		
+		return maxHeight + GAP*5;
+	}
+	
+	/**
+	 * Gibt Klasse zurueck.
+	 * @return Klasse
+	 */
+	public Klasse getKlasse() {
+		return klasse;
+	}
+	/**
+	 * Pruefe ob Klassen attribute ungleich null und
+	 * Anzahl groesser als 0
+	 * @return true, falls wahr
+	 */
+	private boolean atributeOk() {
+		return klasse.getAttribute() != null && klasse.getAttribute().size() > 0;
 	}
 
 }

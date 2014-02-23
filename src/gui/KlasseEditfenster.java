@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -7,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,101 +19,142 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import fk.Attribut;
 import fk.MyTableModel;
 
+/**
+ * 
+ * @author Gruppe 1
+ * 
+ */
+public class KlasseEditfenster extends JFrame {
+	/** Hauptpanel */
+	private JPanel panelEditKl;
 
-public class KlasseEditfenster extends JFrame{
-	
-	JPanel jp;
-	JPanel northJP;
-	JPanel centerJP;
-	JButton jb1;
-	JButton jb2;
-	private JTable attributTable;
-	public KlasseEditfenster(String title){
+	private JPanel northJP;
+	private JPanel centerJP;
+
+	private JTextField nameAttr;
+	private JTextField nameKl;
+	private JLabel nameAttrLabel;
+	private JLabel nameKlLabel;
+
+	private JButton attrHinzB;
+	private JButton attrLeoschenB;
+
+	private final String[] dt = { "int", "double", "long", "float", "String",
+			"char" };
+	private final JComboBox<String> datentypen = new JComboBox<>(dt);
+
+	private ArrayList<ArrayList<String>> attributData;
+	private JTable attrTable;
+
+	public KlasseEditfenster(String title) {
 		super(title);
 		setResizable(false);
-		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width- getSize().width)/2,(d.height- getSize().height)/2);		
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width - getSize().width) / 2,
+				(d.height - getSize().height) / 2);
 	}
-	public JTable getAttributTable() {
-		return attributTable;
-	}
-
-	JTextField atrN;
-	JTextField klassenName;
 	
-	JComboBox<String> datentypen;
-
-	public JPanel getJp() {
-		return jp;
-	}
-
+	/**
+	 * Initialisiert alle Attribute.
+	 */
 	public void init() {
-		
-		jp = new JPanel();
+
+		panelEditKl = new JPanel();
 		northJP = new JPanel();
 		centerJP = new JPanel();
-		jp.setLayout(new BorderLayout(5,5));
-		northJP.setLayout(new GridLayout(0,3,4,2));
-		centerJP.setLayout(new GridLayout(0,3,4,2));
-		centerJP.setBorder(BorderFactory.createTitledBorder("bar")); 
-		JLabel jlA = new JLabel("Atrname");
-		JLabel jlK = new JLabel("Klassenname");		
-		klassenName = new JTextField();			
-		atrN = new JTextField();		
-		String [] dt = {"int","String"};
-		datentypen = new JComboBox<>(dt);		
-		final ArrayList<ArrayList<String>> data = new ArrayList<>();
-		ArrayList<String> row = new ArrayList<String>();
-		jb1 = new JButton("Atr hinz");
-		jb2 = new JButton("Atr löschen");
-		attributTable = new JTable(new MyTableModel(data));
-		//Atribut button
-				jb1.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						//kled.setVisible(false);
-						ArrayList<String> row = new ArrayList<String>();					
-						row.add(atrN.getText());
-						row.add((String)datentypen.getSelectedItem());
-						data.add(row);
-						TableModel dm = attributTable.getModel();
-						((AbstractTableModel) dm).fireTableDataChanged(); 						
-					}
-				});
-		northJP.add(jlK);
-		northJP.add(klassenName);
+
+		panelEditKl.setLayout(new BorderLayout(5, 5));
+		northJP.setLayout(new GridLayout(0, 3, 4, 2));
+		centerJP.setLayout(new GridLayout(0, 3, 4, 2));
+
+		nameAttrLabel = new JLabel("Atrname:");
+		nameKlLabel = new JLabel("Klassenname:");
+
+		nameKl = new JTextField();
+		nameAttr = new JTextField();
+
+		attrHinzB = new JButton("Atr hinz");
+		attrLeoschenB = new JButton("Atr löschen");
+
+		attributData = new ArrayList<>();
+		attrTable = new JTable(new MyTableModel(attributData));
+		// Atribut button
+		attrHinzB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				attributHinzufuegen();
+				TableModel dm = attrTable.getModel();
+				((AbstractTableModel) dm).fireTableDataChanged();
+			}
+		});
+		northJP.add(nameKlLabel);
+		northJP.add(nameKl);
 		northJP.add(new JLabel(""));
-		northJP.add(jlA);
-		northJP.add(atrN);
-		northJP.add(jb1);
+		northJP.add(nameAttrLabel);
+		northJP.add(nameAttr);
+		northJP.add(attrHinzB);
 		northJP.add(new JLabel("Datentyp:"));
-		northJP.add(datentypen);		
-		northJP.add(jb2);
-		
-		jp.add(northJP,BorderLayout.PAGE_START);		
-		jp.add(attributTable, BorderLayout.CENTER);	
-		JScrollPane scrollPane = new JScrollPane(attributTable);
-		jp.add(scrollPane);
-		this.add(jp);
+		northJP.add(datentypen);
+		northJP.add(attrLeoschenB);
+
+		panelEditKl.add(northJP, BorderLayout.PAGE_START);
+		panelEditKl.add(attrTable, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(attrTable);
+		panelEditKl.add(scrollPane);
+		this.add(panelEditKl);
 
 		this.setPreferredSize(new Dimension(400, 300));
 		this.pack();
 		this.setVisible(true);
 	}
 
-	public JTextField getAtrN() {
-		return atrN;
+	public void attributHinzufuegen() {
+		ArrayList<String> row = new ArrayList<String>();
+		row.add(nameAttr.getText());
+		row.add((String) datentypen.getSelectedItem());
+		attributData.add(row);
 	}
 
+	public void attributLoeschen(Attribut atr) {
+	}
+
+	/**
+	 * @return the panelEditKl
+	 */
+	public JPanel getPanelEditKl() {
+		return panelEditKl;
+	}
+
+	/**
+	 * @return the attrHinzB
+	 */
+	public JButton getAttrHinzB() {
+		return attrHinzB;
+	}
+
+	/**
+	 * @return the attrLeoschenB
+	 */
+	public JButton getAttrLeoschenB() {
+		return attrLeoschenB;
+	}
+
+	/**
+	 * @return the attrTable
+	 */
+	public JTable getAttrTable() {
+		return attrTable;
+	}
+
+	/**
+	 * @return the klassenName
+	 */
 	public JTextField getKlassenName() {
-		return klassenName;
-	}
-
-	public JButton getJb1() {
-		return jb1;
+		return nameKl;
 	}
 
 }

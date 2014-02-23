@@ -3,6 +3,11 @@ package fk;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * Modell fuer Attribut Tabelle
+ * @author artjom
+ *
+ */
 public class MyTableModel extends AbstractTableModel{
 	private ArrayList<ArrayList<String>> attributes;
 	

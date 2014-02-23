@@ -2,9 +2,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +27,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 
-import fk.Attribut;
 import fk.Klasse;
 import fk.Klassendiagramm;
 
@@ -141,12 +137,13 @@ public class Hauptfenster extends JFrame implements Observer{
 		        }
 			}
 		});
-
+		
 		saveItem.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
-				int returnVal = fileChooser.showOpenDialog(Hauptfenster.this);
+				fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+				int returnVal = fileChooser.showSaveDialog(Hauptfenster.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = fileChooser.getSelectedFile();
 //		            try {
