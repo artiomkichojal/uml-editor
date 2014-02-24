@@ -136,7 +136,6 @@ public class Hauptfenster extends JFrame implements Observer{
 		            File file = fileChooser.getSelectedFile();
 		            try {
 						Klassendiagramm kd = load(file.getAbsolutePath());
-						System.out.println(kd.getName());
 						klDia= kd;
 						workBench.removeAll();
 						revalidate();
@@ -215,7 +214,7 @@ public class Hauptfenster extends JFrame implements Observer{
 	}
 	public void zeichneKlassen() {
 		for (KlComponent klComp : klDia.getKlassen()) {
-			workBench.add(kC);	
+			workBench.add(klComp);	
 			workBench.repaint();
 			revalidate();
 		}
