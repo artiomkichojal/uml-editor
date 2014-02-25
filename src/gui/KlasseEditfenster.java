@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -86,22 +87,19 @@ public class KlasseEditfenster extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MyTableModel dm = (MyTableModel) attrTable.getModel();
-				dm.removeRow(attrTable.getSelectedRow());
-				((MyTableModel) dm).fireTableDataChanged();
-				
+				attributLoeschen();					
 			}
 		});
-		// Atribut button
+		// Atribut hinzufuegen button
 		attrHinzB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				attributHinzufuegen();
-				TableModel dm = attrTable.getModel();
-				((AbstractTableModel) dm).fireTableDataChanged();
+				attributHinzufuegen();				
 			}
 		});
+		
+		
 		northJP.add(nameKlLabel);
 		northJP.add(nameKl);
 		northJP.add(new JLabel(""));
@@ -124,13 +122,35 @@ public class KlasseEditfenster extends JFrame {
 	}
 
 	public void attributHinzufuegen() {
+		//nur leerzeichen ? 3b
+		if (nameAttr.getText().matches("\\s*")) {
+			JOptionPane.showMessageDialog(this,
+					"Geben Sie sinvolle Attributname ein!");
+		}
 		ArrayList<String> row = new ArrayList<String>();
 		row.add(nameAttr.getText());
 		row.add((String) datentypen.getSelectedItem());
-		attributData.add(row);
+		if(attributData.contains(row)){
+			JOptionPane.showMessageDialog(this,
+					"Attribut ist schon vorhanden");
+		}
+		else{
+			attributData.add(row);
+			MyTableModel dm = (MyTableModel) attrTable.getModel();
+			dm.fireTableDataChanged();
+		}
+		
 	}
 
-	public void attributLoeschen(Attribut atr) {
+	public void attributLoeschen() {
+		//wenn zeile ausgewaelt -> loesche
+		if (attrTable.getSelectedRow() >=0) {
+			MyTableModel dm = (MyTableModel) attrTable.getModel();
+			dm.removeRow(attrTable.getSelectedRow());
+			((MyTableModel) dm).fireTableDataChanged();
+		}else{
+			JOptionPane.showMessageDialog(this,	"Kein Attribut ausgewaelt!");
+		}
 	}
 
 	/**

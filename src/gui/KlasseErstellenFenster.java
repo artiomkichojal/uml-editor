@@ -19,27 +19,29 @@ import fk.MyTableModel;
 public class KlasseErstellenFenster extends Observable {
 	
 	private JButton erstellenB;
-	private KlasseEditfenster klErstellFenster;
+	private KlasseEditfenster klEditFenster;
 
-	public KlasseEditfenster getKled() {
-		return klErstellFenster;
-	}
+	
 
 	public void init() {
-		klErstellFenster = new KlasseEditfenster("Klasse erstellen");
-		klErstellFenster.init();
+		klEditFenster = new KlasseEditfenster("Klasse erstellen");
+		klEditFenster.init();
 		erstellenB = new JButton("Erstellen");
 
-		klErstellFenster.getPanelEditKl().add(erstellenB, BorderLayout.PAGE_END);
+		klEditFenster.getPanelEditKl().add(erstellenB, BorderLayout.PAGE_END);
 		erstellenB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String klassName = klErstellFenster.getKlassenName().getText();
-				// klassename soll nicht leer sein
-				if (!klassName.equals("")) {
+				String klassName = klEditFenster.getKlassenName().getText();
+				// klassename soll nicht leer sein 3a
+				if (klassName.equals("")) {
+					JOptionPane.showMessageDialog(klEditFenster,
+							"Geben Sie eine Klassenname ein!");
+					
+				}else {
 					Klasse klasse = new Klasse(klassName);
 					// fuege Atributen der Klasse hinzu
-					MyTableModel tabelle = (MyTableModel) klErstellFenster
+					MyTableModel tabelle = (MyTableModel) klEditFenster
 							.getAttrTable().getModel();
 					for (int i = 0; i < tabelle.getRowCount(); i++) {
 						// erstelle Attribut
@@ -51,10 +53,7 @@ public class KlasseErstellenFenster extends Observable {
 					setChanged();
 					notifyObservers(klasse);
 					// Fenster schliesen
-					klErstellFenster.dispose();
-				} else {
-					JOptionPane.showMessageDialog(klErstellFenster,
-							"Geben Sie eine Klassenname ein!");
+					klEditFenster.dispose();
 				}
 
 			}
@@ -63,10 +62,10 @@ public class KlasseErstellenFenster extends Observable {
 	}
 
 	/**
-	 * @return klErstellFenster
+	 * @return klEditFenster
 	 */
-	public KlasseEditfenster getKlErstellFenster() {
-		return klErstellFenster;
+	public KlasseEditfenster getKlEditFenster() {
+		return klEditFenster;
 	}
 
 }
