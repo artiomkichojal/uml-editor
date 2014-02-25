@@ -122,15 +122,16 @@ public class KlasseEditfenster extends JFrame {
 	}
 
 	public void attributHinzufuegen() {
+		ArrayList<String> row = new ArrayList<String>();
+		row.add(nameAttr.getText());
+		row.add((String) datentypen.getSelectedItem());
 		//nur leerzeichen ? 3b
 		if (nameAttr.getText().matches("\\s*")) {
 			JOptionPane.showMessageDialog(this,
 					"Geben Sie sinvolle Attributname ein!");
 		}
-		ArrayList<String> row = new ArrayList<String>();
-		row.add(nameAttr.getText());
-		row.add((String) datentypen.getSelectedItem());
-		if(attributData.contains(row)){
+		
+		else if(attributData.contains(row)){
 			JOptionPane.showMessageDialog(this,
 					"Attribut ist schon vorhanden");
 		}
