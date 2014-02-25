@@ -41,6 +41,9 @@ public class MyTableModel extends AbstractTableModel{
 		}
 			
     }
+	public void removeRow(int row) {
+		attributes.remove(row);
+    }
 
 
 }

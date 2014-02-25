@@ -33,4 +33,18 @@ public class Klassendiagramm implements Serializable{
 		return name;
 	}
 
+	/**
+	 * @param klassen the klassen to set
+	 */
+	public void setKlassen(ArrayList<KlComponent> klassen) {
+		this.klassen = klassen;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

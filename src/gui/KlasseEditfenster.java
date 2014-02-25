@@ -78,9 +78,20 @@ public class KlasseEditfenster extends JFrame {
 
 		attrHinzB = new JButton("Atr hinz");
 		attrLeoschenB = new JButton("Atr löschen");
-
+		
 		attributData = new ArrayList<>();
 		attrTable = new JTable(new MyTableModel(attributData));
+		
+		attrLeoschenB.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MyTableModel dm = (MyTableModel) attrTable.getModel();
+				dm.removeRow(attrTable.getSelectedRow());
+				((MyTableModel) dm).fireTableDataChanged();
+				
+			}
+		});
 		// Atribut button
 		attrHinzB.addActionListener(new ActionListener() {
 

@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -30,8 +34,11 @@ public class KlComponent extends JPanel {
 		Random r = new Random();
 		int x = r.nextInt(600);
 		int y = r.nextInt(500);
+		//Positioniere die Klasse auf zufaelige Positionen 
 		setBounds(x, y, berechneBreite(), berechneHoehe());
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		
+		addMouseMotionListener(new Drag());
 
 	}
 
@@ -112,6 +119,27 @@ public class KlComponent extends JPanel {
 	 */
 	private boolean atributeOk() {
 		return klasse.getAttribute() != null && klasse.getAttribute().size() > 0;
+	}
+	
+	/**
+	 * Damit die KlKomponentbewegung nach Deserialisierung(load) funktioniert.
+	 * @author artjom
+	 *
+	 */
+	private class Drag implements MouseMotionListener,Serializable{
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			e.translatePoint(e.getComponent().getLocation().x, e.getComponent().getLocation().y);
+	        setLocation(e.getX(), e.getY());
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 }

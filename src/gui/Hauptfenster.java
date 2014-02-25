@@ -25,7 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-
+import javax.swing.JSeparator;
 
 import fk.Klasse;
 import fk.Klassendiagramm;
@@ -34,35 +34,37 @@ import fk.Klassendiagramm;
 public class Hauptfenster extends JFrame implements Observer{
 	private static Hauptfenster hauptfenster;
 	private Klassendiagramm klDia;
-	JFrame jf;
 	private JPanel mainpanel;
 	private JMenu menu;
-	JButton jb;
-	KlComponent kC;
+	private JButton klasseB;
+	private JButton assozB;
+	
 	/**Enthaelt nur KlKomponent*/
-	JPanel workBench;
+	private JPanel workBench;
 	
-	KlasseErstellenFenster kef;
-	
+	private KlasseErstellenFenster klErstellFenster;
+	private KlasseErstellenFenster assozFenster;
 	
 	private Hauptfenster(String title, String klName) {
 		super(title);
 		setJMenuBar(generateMenu());
 		klDia = new Klassendiagramm(klName);
-		kef = new KlasseErstellenFenster();
-		Observable ob = kef;
+		klErstellFenster = new KlasseErstellenFenster();
+		Observable ob = klErstellFenster;
 		ob.addObserver(this);
 
 		mainpanel = new JPanel();
-		jb = new JButton("Klasse Erstellen");
-		jb.addActionListener(new ActionListener() {
+		klasseB = new JButton("Neue Klasse");
+		assozB = new JButton("Assoziation");
+		klasseB.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
-				kef.init();					
+				klErstellFenster.init();					
 			}
 		});
-		mainpanel.add(jb);
+		mainpanel.add(klasseB);
+		mainpanel.add(assozB);
 		this.add(mainpanel,BorderLayout.NORTH);
 		workBench = new JPanel();
 		workBench.setLayout(null);
@@ -81,16 +83,9 @@ public class Hauptfenster extends JFrame implements Observer{
 	public void update(Observable arg0, Object arg1) {
 
 		if (arg1 instanceof Klasse) {
-			kC= new KlComponent((Klasse)arg1);
-			
+			KlComponent kC= new KlComponent((Klasse)arg1);			
 			klDia.getKlassen().add(kC);
-			//kC = kc1;
-//			workBench.add(kC);	
-//			workBench.repaint();
-//			revalidate();
-			zeichneKlassen();
-			handleDrag();
-			
+			zeichneKlassen();			
 		}		
 	}
 	
@@ -102,30 +97,36 @@ public class Hauptfenster extends JFrame implements Observer{
 		return null;
 		
 	}
-	/**
-	 * Methode zum Bewegen von Komponenten
-	 * @param panel
-	 */
-	public void handleDrag(){
-		for (final KlComponent klComp : klDia.getKlassen()) {
-			klComp.addMouseMotionListener(new MouseMotionAdapter() {
-
-	            @Override
-	            public void mouseDragged(MouseEvent me) {
-	                me.translatePoint(me.getComponent().getLocation().x, me.getComponent().getLocation().y);
-	                klComp.setLocation(me.getX(), me.getY());
-	            }
-
-	        });
-		}
-	        
-	}
 	
 	private JMenuBar generateMenu() {
 		JMenuBar menubar = new JMenuBar();
-		JMenu menu = new JMenu("File");
+		menu = new JMenu("File");
+		JMenuItem neuItem = new JMenuItem("Neu");
 		JMenuItem loadItem = new JMenuItem("Load");
 		JMenuItem saveItem = new JMenuItem("Save");
+		
+		menu.add(neuItem);
+		menu.add(new JSeparator());
+		neuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {			
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+				int returnVal = fileChooser.showSaveDialog(Hauptfenster.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fileChooser.getSelectedFile();
+		            neu(file.getName());
+					try {
+						save(file.getAbsolutePath());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} 
+			}
+			
+		});
 		menu.add(loadItem);
 		loadItem.addActionListener(new ActionListener() {	
 			@Override
@@ -137,9 +138,9 @@ public class Hauptfenster extends JFrame implements Observer{
 		            try {
 						Klassendiagramm kd = load(file.getAbsolutePath());
 						klDia= kd;
-						workBench.removeAll();
-						revalidate();
-						repaint();
+						//entferne alles aus workbench
+						clearJPanel(workBench);
+						//zeichne Klassenkomponenten neue
 						zeichneKlassen();
 		            } catch (IOException e) {
 						e.printStackTrace();
@@ -212,6 +213,19 @@ public class Hauptfenster extends JFrame implements Observer{
 		}
 		return kld;
 	}
+	public void neu(String klDName) {
+		if (klDia != null && (klDName != null || klDName.isEmpty())) {
+			klDia = new Klassendiagramm(klDName);
+			clearJPanel(workBench);
+		}else {
+			try {
+				throw new Exception();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	public void zeichneKlassen() {
 		for (KlComponent klComp : klDia.getKlassen()) {
 			workBench.add(klComp);	
@@ -220,9 +234,19 @@ public class Hauptfenster extends JFrame implements Observer{
 		}
 		
 	}
+	/**
+	 * Entferne alles aus JPanel.
+	 * @param jp zu veraendern
+	 * @modifies jp
+	 */
+	public void clearJPanel(JPanel jp) {
+		jp.removeAll();
+		revalidate();
+		repaint();
+	}
 	
 	public static void main(String[] args) {
-		Hauptfenster.getInstance("Diagramm2");
+		Hauptfenster.getInstance("D1");
 	}
 
 	
