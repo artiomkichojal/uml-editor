@@ -3,7 +3,7 @@ package fk;
 import java.io.Serializable;
 
 /**
- * Objekte der Klasse Attribut repr�sentieren Attribute
+ * Objekte der Klasse Attribut repraesentieren Attribute
  * <br/>
  * Attribute haben einen Namen "name" und
  * einen String "datentyp" = {int, double, long, float, String, char} 
@@ -24,7 +24,7 @@ public class Attribut implements Serializable{
 	 * datentyp, ist das Attributentyp
 	 * 
 	 * @pre datentyp = {int, double, long, float, String, char}
-	 * @post Vorbedingung erf�llt!
+	 * @post Vorbedingung erfuellt!
 	 * 
 	 */
 	private String datentyp;
@@ -51,10 +51,10 @@ public class Attribut implements Serializable{
 	}
 
 	/**
-	 * Ver�ndert oder weist dem Attribut einen neuen name zu.
+	 * Veraendert oder weist dem Attribut einen neuen name zu.
 	 * 
 	 * @param name Name des Attributs
-	 * @post name ist der gew�nschte Attributname
+	 * @post name ist der gewuenschte Attributname
 	 * @modifies this
 	 */
 	public void setName(String name) {
@@ -72,14 +72,34 @@ public class Attribut implements Serializable{
 	}
 
 	/**
-	 * Ver�ndert oder weist dem Attribut einen neuen Datentyp zu
+	 * Veraendert oder weist dem Attribut einen neuen Datentyp zu
 	 * 
 	 * @param datentyp Typ des Attributs
-	 * @post datentyp ist der gew�nschte Attributtyp
+	 * @post datentyp ist der gewuenschte Attributtyp
 	 * @modifies this
 	 */
 	public void setDatentyp(String datentyp) {
 		this.datentyp = datentyp;
+	}
+	/**
+	 * Repraesentationsinvariante
+	 * @return true, falls alle bedingungen erfuellt sind
+	 */
+	public boolean isOk() {
+		return name != null && !name.equals("") && (datentyp.equals("int")
+				|| datentyp.equals("double") || datentyp.equals("long")
+				|| datentyp.equals("float") || datentyp.equals("String")
+				|| datentyp.equals("char"));
+	}
+	/**
+	 * Abstaktionsfunktion.
+	 */
+	public String toString() {
+		if (isOk()) {
+			return name + ": " + datentyp;
+		}else {
+			return "";
+		}
 	}
 
 }

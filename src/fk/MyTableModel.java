@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * Modell fuer Attribut Tabelle
+ * Modell fuer Attribut Tabelle.
  * @author artjom
  *
  */

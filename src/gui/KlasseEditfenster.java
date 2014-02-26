@@ -24,16 +24,13 @@ import fk.Attribut;
 import fk.MyTableModel;
 
 /**
- * 
+ * Klasse zur Darstellung Eingabemaske und Erstellen von Attributen.
  * @author Gruppe 1
  * 
  */
 public class KlasseEditfenster extends JFrame {
 	/** Hauptpanel */
 	private JPanel panelEditKl;
-
-	private JPanel northJP;
-	private JPanel centerJP;
 
 	private JTextField nameAttr;
 	private JTextField nameKl;
@@ -45,11 +42,15 @@ public class KlasseEditfenster extends JFrame {
 
 	private final String[] dt = { "int", "double", "long", "float", "String",
 			"char" };
-	private final JComboBox<String> datentypen = new JComboBox<>(dt);
+	private final JComboBox<String> datentypenList = new JComboBox<>(dt);
 
 	private ArrayList<ArrayList<String>> attributData;
 	private JTable attrTable;
-
+	
+	/**
+	 * Konstruktor zum setzen der Name von Fenster und Position.
+	 * @param title
+	 */
 	public KlasseEditfenster(String title) {
 		super(title);
 		setResizable(false);
@@ -64,8 +65,8 @@ public class KlasseEditfenster extends JFrame {
 	public void init() {
 
 		panelEditKl = new JPanel();
-		northJP = new JPanel();
-		centerJP = new JPanel();
+		JPanel northJP = new JPanel();
+		JPanel centerJP = new JPanel();
 
 		panelEditKl.setLayout(new BorderLayout(5, 5));
 		northJP.setLayout(new GridLayout(0, 3, 4, 2));
@@ -99,7 +100,7 @@ public class KlasseEditfenster extends JFrame {
 			}
 		});
 		
-		
+		//fuege Komponente hinzu
 		northJP.add(nameKlLabel);
 		northJP.add(nameKl);
 		northJP.add(new JLabel(""));
@@ -107,7 +108,7 @@ public class KlasseEditfenster extends JFrame {
 		northJP.add(nameAttr);
 		northJP.add(attrHinzB);
 		northJP.add(new JLabel("Datentyp:"));
-		northJP.add(datentypen);
+		northJP.add(datentypenList);
 		northJP.add(attrLeoschenB);
 
 		panelEditKl.add(northJP, BorderLayout.PAGE_START);
@@ -120,11 +121,14 @@ public class KlasseEditfenster extends JFrame {
 		this.pack();
 		this.setVisible(true);
 	}
-
+	
+	/**
+	 * Fuegt Attribut in die Tabelle hinzu. 
+	 */
 	public void attributHinzufuegen() {
 		ArrayList<String> row = new ArrayList<String>();
 		row.add(nameAttr.getText());
-		row.add((String) datentypen.getSelectedItem());
+		row.add((String) datentypenList.getSelectedItem());
 		//nur leerzeichen ? 3b
 		if (nameAttr.getText().matches("\\s*")) {
 			JOptionPane.showMessageDialog(this,
@@ -142,7 +146,10 @@ public class KlasseEditfenster extends JFrame {
 		}
 		
 	}
-
+	
+	/**
+	 * Loescht Attribut aus der Tabelle.
+	 */
 	public void attributLoeschen() {
 		//wenn zeile ausgewaelt -> loesche
 		if (attrTable.getSelectedRow() >=0) {

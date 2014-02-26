@@ -22,7 +22,9 @@ public class KlasseErstellenFenster extends Observable {
 	private KlasseEditfenster klEditFenster;
 
 	
-
+	/**
+	 * Initialisiere Komponenten.
+	 */
 	public void init() {
 		klEditFenster = new KlasseEditfenster("Klasse erstellen");
 		klEditFenster.init();

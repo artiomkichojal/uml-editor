@@ -26,7 +26,11 @@ import fk.Klasse;
 public class KlComponent extends JPanel {
 	private Klasse klasse;
 	private final int GAP = 2; // Zeilenabstand und Spaltenabstand
-
+	/**
+	 * Berechne Hoehen und Breiten der Komonente. Es wird auch 
+	 * zufaellige Position generiert 0<= x<= 600, 0<= y<= 500
+	 * @param klasse
+	 */
 	public KlComponent(Klasse klasse) {
 		this.klasse = klasse;
 		//setBackground(Color.WHITE);

@@ -25,12 +25,20 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import fk.Klasse;
 import fk.Klassendiagramm;
 
-
+/**
+ * Huptfenster zur Darstellung aller Komponenten.
+ * Die Klasse kann nur ein mal instanziert werden(durch Singelton-Musster) 
+ * @author Gruppe1
+ *
+ */
 public class Hauptfenster extends JFrame implements Observer{
 	private static Hauptfenster hauptfenster;
 	private Klassendiagramm klDia;
@@ -69,16 +77,17 @@ public class Hauptfenster extends JFrame implements Observer{
 		workBench = new JPanel();
 		workBench.setLayout(null);
 		workBench.setBackground(Color.WHITE);
-
-		add(workBench,BorderLayout.CENTER);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 600));
+		add(workBench, BorderLayout.CENTER);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((d.width- getSize().width)/2,0);
 		pack();
 		setVisible(true);
-		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((d.width- getSize().width)/2,(d.height- getSize().height)/2);
+		
 	}
-	
+	//wird aufgerufen wenn Observable(z.B KlErstellFenster) sich aendert
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
@@ -88,7 +97,11 @@ public class Hauptfenster extends JFrame implements Observer{
 			zeichneKlassen();			
 		}		
 	}
-	
+	/**
+	 * Gibt neue Instanz von Hauptfenster zurueck.
+	 * @param klName
+	 * @return Hauptfenster
+	 */
 	public static Hauptfenster getInstance(String klName) {
 		if (hauptfenster == null) {
 			hauptfenster = new Hauptfenster("Hauptfenster", klName);
@@ -97,7 +110,10 @@ public class Hauptfenster extends JFrame implements Observer{
 		return null;
 		
 	}
-	
+	/**
+	 * Generiert Menu.
+	 * @return
+	 */
 	private JMenuBar generateMenu() {
 		JMenuBar menubar = new JMenuBar();
 		menu = new JMenu("File");
@@ -177,6 +193,11 @@ public class Hauptfenster extends JFrame implements Observer{
 
 		return menubar;
 	}
+	/**
+	 * Methode zum Speichern des Klassendiagramms.
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public void save(String fileName) throws IOException {
 		OutputStream fos = null;
 		try {
@@ -193,7 +214,12 @@ public class Hauptfenster extends JFrame implements Observer{
 		}
 
 	}
-
+	/**
+	 * Methode zum Laden des Klassendiagrams.
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
 	public Klassendiagramm load(String fileName) throws IOException {
 		InputStream fis = null;
 		Klassendiagramm kld = null;
@@ -213,6 +239,10 @@ public class Hauptfenster extends JFrame implements Observer{
 		}
 		return kld;
 	}
+	/**
+	 * Methode zum Erstellem des neuen Klassendiagramms.
+	 * @param klDName
+	 */
 	public void neu(String klDName) {
 		if (klDia != null && (klDName != null || klDName.isEmpty())) {
 			klDia = new Klassendiagramm(klDName);
@@ -226,6 +256,9 @@ public class Hauptfenster extends JFrame implements Observer{
 		}
 		
 	}
+	/**
+	 * Zeichnet die Klasse auf dem workbench.
+	 */
 	public void zeichneKlassen() {
 		for (KlComponent klComp : klDia.getKlassen()) {
 			workBench.add(klComp);	
