@@ -36,8 +36,15 @@ public class Attribut implements Serializable{
 	 * @param datentyp Typ des Attributs 
 	 */
 	public Attribut(String name, String datentyp) {
-		this.name = name;
-		this.datentyp = datentyp;
+		if ((datentyp.equals("int")
+				|| datentyp.equals("double") || datentyp.equals("long")
+				|| datentyp.equals("float") || datentyp.equals("String")
+				|| datentyp.equals("char")) 
+				&& name.length() < 21 && name.length() > 0) {
+			this.name = name;
+			this.datentyp = datentyp;
+		}
+		
 	}
 
 	/**
@@ -86,7 +93,7 @@ public class Attribut implements Serializable{
 	 * @return true, falls alle bedingungen erfuellt sind
 	 */
 	public boolean isOk() {
-		return name != null && !name.equals("") && (datentyp.equals("int")
+		return name != null && datentyp != null && !name.equals("") && (datentyp.equals("int")
 				|| datentyp.equals("double") || datentyp.equals("long")
 				|| datentyp.equals("float") || datentyp.equals("String")
 				|| datentyp.equals("char"));
