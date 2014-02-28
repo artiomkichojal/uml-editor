@@ -35,7 +35,7 @@ public class Attribut implements Serializable{
 	 * @param name Namen des Attributs
 	 * @param datentyp Typ des Attributs 
 	 */
-	public Attribut(String name, String datentyp) {
+	public Attribut(String name, String datentyp) throws IllegalArgumentException{
 		if ((datentyp.equals("int")
 				|| datentyp.equals("double") || datentyp.equals("long")
 				|| datentyp.equals("float") || datentyp.equals("String")
@@ -43,6 +43,8 @@ public class Attribut implements Serializable{
 				&& name.length() < 21 && name.length() > 0) {
 			this.name = name;
 			this.datentyp = datentyp;
+		}else {
+			throw new IllegalArgumentException("Keine Passende Argumente");
 		}
 		
 	}

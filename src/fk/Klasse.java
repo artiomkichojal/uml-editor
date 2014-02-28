@@ -39,7 +39,21 @@ public class Klasse implements Serializable{
 	 * @param datentyp
 	 */
 	public void attributErstellen(String name, String datentyp) {
-		attribute.add(new Attribut(name, datentyp));
+		try {
+			Attribut atr = new Attribut(name, datentyp);
+			for (Attribut actAtr : attribute) {
+				if (!actAtr.getName().equals(atr.getName())
+						&& !actAtr.getDatentyp().equals(atr.getDatentyp())) {
+					attribute.add(atr);
+				}
+			}
+			if (attribute.size() == 0) {
+				attribute.add(atr);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	}
 	/**
 	 * Loescht Attribut.
@@ -52,7 +66,6 @@ public class Klasse implements Serializable{
 		for (Attribut actAtr : attribute) {
 			if (actAtr.getName().equals(atr.getName())
 					&& actAtr.getDatentyp().equals(atr.getDatentyp())) {
-				System.out.println("Contains");
 				attribute.remove(count);
 				break;
 			}

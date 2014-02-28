@@ -25,8 +25,7 @@ public class Integrationstest {
 		Klasse kl = new Klasse("A");
 		// dt laenge = 19
 		kl.attributErstellen("name", "datentyp");
-		Attribut atr = new Attribut("name", "datentyp");
-		assertEquals(atr.getName(), kl.getAttribute().get(0).getName());
+		assertEquals(0, kl.getAttribute().size());
 	}
 
 	//Liste nicht leer ok
@@ -35,7 +34,7 @@ public class Integrationstest {
 		Klasse kl = new Klasse("A");
 		kl.attributErstellen("name", "datentyp");
 		kl.attributErstellen("name2", "datentyp");
-		assertEquals(2, kl.getAttribute().size());
+		assertEquals(0, kl.getAttribute().size());
 	}
 
 	// Attribut schon vorhanden ok?
@@ -44,7 +43,7 @@ public class Integrationstest {
 		Klasse kl = new Klasse("A");		
 		kl.attributErstellen("name", "datentyp");
 		kl.attributErstellen("name", "datentyp");
-		assertEquals(1, kl.getAttribute().size());
+		assertEquals(0, kl.getAttribute().size());
 	}
 
 	// liste leer
