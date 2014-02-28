@@ -48,8 +48,15 @@ public class Klasse implements Serializable{
 	 */
 	public void attributLoeschen(String name, String datentyp) {
 		Attribut atr = new Attribut(name, datentyp);
-		if (attribute.contains(atr)) {
-			attribute.remove(atr);
+		int count= 0;
+		for (Attribut actAtr : attribute) {
+			if (actAtr.getName().equals(atr.getName())
+					&& actAtr.getDatentyp().equals(atr.getDatentyp())) {
+				System.out.println("Contains");
+				attribute.remove(count);
+				break;
+			}
+			count++;
 		}
 	}
 	/**
